@@ -1,5 +1,6 @@
 package com.ext.dependency.jar;
 
+import com.test.processor.UsersRepository;
 import org.ojai.Document;
 import org.ojai.DocumentStream;
 import org.ojai.store.*;
@@ -58,4 +59,21 @@ public class MainJsonRepository {
     protected List<Document> query(QueryCondition queryCondition) {
         throw new UnsupportedOperationException("Not implemented yet !!!!!!!!!!!!!");
     }
+
+    public MainJsonRepository getRepository(String type, String path, boolean useBufferedWrite){
+        switch (type) {
+            case "userRepository":
+
+                if(!path.isBlank() && !useBufferedWrite){
+                    return new UsersRepository(path);
+                }else if(!path.isBlank()){
+                    return new UsersRepository(path, useBufferedWrite);
+                } else return new UsersRepository();
+
+
+            default:
+                return new MainJsonRepository(path);
+        }
+    }
+
 }
