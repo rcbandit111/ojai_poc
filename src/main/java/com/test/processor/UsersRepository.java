@@ -32,7 +32,7 @@ public class UsersRepository extends MainJsonRepository {
     }
 
     public List<String> getRegisteredUsersByDate() {
-        List<Document> documents = jsonStore.getAllDocuments(fields);
+        List<Document> documents = getAllDocuments(fields);
         return documents.stream().filter(Objects::nonNull)
                 .map(Document::getIdString)
                 .collect(Collectors.toList());
@@ -40,9 +40,9 @@ public class UsersRepository extends MainJsonRepository {
 
     public List<Document> getRegisteredUsers(List<String> users) {
         QueryCondition condition = MapRDB.newCondition().and().in("documentId", users).close()
-                        .build();
+                .build();
 
-        return jsonStore.query(condition, "documentId");
+        return queryDocuments(condition, "documentId");
     }
 
     public DocumentStream getUsers() {
@@ -52,7 +52,7 @@ public class UsersRepository extends MainJsonRepository {
                 .close().build();
 
         String[] fields = new String[0];
-        return jsonStore.queryAsStream(queryCondition, fields);
+        return queryDocumentsList(queryCondition, fields);
     }
 
 }
